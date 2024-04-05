@@ -1,11 +1,11 @@
-CREATE TABLE users (
+CREATE TABLE user (
                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
                        username VARCHAR(255) NOT NULL,
                        password VARCHAR(255) NOT NULL,
                        email VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE books (
+CREATE TABLE book (
                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
                        title VARCHAR(255) NOT NULL,
                        author VARCHAR(255) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE books (
                        description TEXT
 );
 
-CREATE TABLE statuses (
+CREATE TABLE status (
                           id BIGINT AUTO_INCREMENT PRIMARY KEY,
                           name VARCHAR(255) NOT NULL
 );
@@ -30,19 +30,19 @@ CREATE TABLE orders (
                         created_at TIMESTAMP NOT NULL,
                         status_id BIGINT,
                         user_id BIGINT,
-                        FOREIGN KEY (status_id) REFERENCES statuses(id),
-                        FOREIGN KEY (user_id) REFERENCES users(id)
+                        FOREIGN KEY (status_id) REFERENCES status(id),
+                        FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
 
 
-CREATE TABLE order_details (
+CREATE TABLE order_detail (
                                id BIGINT AUTO_INCREMENT PRIMARY KEY,
                                quantity INT NOT NULL,
                                unit_price DECIMAL(10,2) NOT NULL,
                                total_price DECIMAL(10,2) NOT NULL,
                                book_id BIGINT NOT NULL,
                                order_id BIGINT NOT NULL,
-                               FOREIGN KEY (book_id) REFERENCES books(id),
+                               FOREIGN KEY (book_id) REFERENCES book(id),
                                FOREIGN KEY (order_id) REFERENCES orders(id)
 );

@@ -12,7 +12,6 @@ import org.antlr.v4.runtime.misc.NotNull;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="order_details")
 public class OrderDetail {
 
     @Id

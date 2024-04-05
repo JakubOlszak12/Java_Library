@@ -1,18 +1,18 @@
 -- Seed statuses
-INSERT INTO statuses (name) VALUES
+INSERT INTO status (name) VALUES
                                 ('Pending'),
                                 ('Processing'),
                                 ('Completed');
 
 -- Seed users
-INSERT INTO users (username, password, email) VALUES
+INSERT INTO user (username, password, email) VALUES
                                                   ('user1', '$2y$10$3RXNFvqqfhmKISiOuCXvbuanE4I.42mYNH0RVmS18ZdTUVXDlPPFO', 'user1@example.com'),
                                                   ('user2', '$2y$10$8wDow8Qbh0Fgwh09F57LCuKeKN/CSmMF6omHLrhuvcwcAr4XtNjsW', 'user2@example.com'),
                                                   ('user3', '$2a$10$GbbmKfOjN/pdKsAtg.qL2eZWb8f97GB0gIbM1BxvGZ.HA/W0bPoUq', 'user3@example.com'),
                                                   ('user4', '$2a$10$j0Uhi8Y1/kB34fzkJcrCw.vQ0mR9tH9c16BCJ0d6VwN/A9kUYlG36', 'user4@example.com'),
                                                   ('user5', '$2a$10$XWQqmt0b5GY2o8qegbouTe5Y40lhXVexz1Z2OGZkPUSUu/ZGUT6Lq', 'user5@example.com');
 -- Seed books
-INSERT INTO books (title, author, publisher, isbn, description) VALUES
+INSERT INTO book (title, author, publisher, isbn, description) VALUES
                                                                     ('Book1', 'Author1', 'Publisher1', 'ISBN1', 'Description1'),
                                                                     ('Book2', 'Author2', 'Publisher2', 'ISBN2', 'Description2'),
                                                                     ('Book3', 'Author3', 'Publisher3', 'ISBN3', 'Description3'),
@@ -33,7 +33,7 @@ INSERT INTO orders (street, postal_code, city, phone_number, email, price, creat
                                                                                                                ('Street5', '56789', 'City5', '567890123', 'user5@example.com', 500.00, NOW(), 2, 5);
 
 -- Seed order details
-INSERT INTO order_details (quantity, unit_price, total_price, book_id, order_id) VALUES
+INSERT INTO order_detail (quantity, unit_price, total_price, book_id, order_id) VALUES
                                                                                      (1, 50.00, 50.00, 1, 1),
                                                                                      (2, 50.00, 100.00, 2, 1),
                                                                                      (3, 50.00, 150.00, 3, 1),
