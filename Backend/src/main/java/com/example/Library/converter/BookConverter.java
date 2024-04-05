@@ -10,6 +10,7 @@ public class BookConverter implements Converter<Book, BookDto> {
     @Override
     public BookDto convert(Book source){
         return BookDto.builder()
+                .id(source.getId())
         .title(source.getTitle())
         .author(source.getAuthor())
         .publisher(source.getPublisher())
