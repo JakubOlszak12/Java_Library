@@ -1,6 +1,8 @@
 package com.example.Library.service;
 
 import com.example.Library.Model.Book;
+import com.example.Library.Model.BookReservation;
+import com.example.Library.Model.Client;
 import com.example.Library.converter.BookConverter;
 import com.example.Library.dto.BookDto;
 import com.example.Library.repository.BookRepository;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,6 +43,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book addBook(Book book) {
+        Book newBook = new Book(null,book.getTitle(),book.getAuthor(),book.getPublisher(),book.getIsbn(),book.getDescription(),book.getQuantity(),book.getCurrentQuantity(),new HashSet<BookReservation>());
         return bookRepository.save(book);
     }
 

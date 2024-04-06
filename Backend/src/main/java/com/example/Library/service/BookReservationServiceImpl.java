@@ -3,6 +3,7 @@ package com.example.Library.service;
 import com.example.Library.Model.Book;
 import com.example.Library.Model.BookReservation;
 import com.example.Library.Model.Client;
+import com.example.Library.dto.BookDto;
 import com.example.Library.dto.BookReservationDto;
 import com.example.Library.repository.BookRepository;
 import com.example.Library.repository.BookReservationRepository;
@@ -37,5 +38,11 @@ public class BookReservationServiceImpl implements BookReservationService{
             return bookReservation;
         }
         return null;
+    }
+
+    @Override
+    public BookReservation findById(Long id) {
+        Optional<BookReservation> bookReservation = Optional.ofNullable(bookReservationRepository.findByClientId(id));
+        return bookReservation.orElse(null);
     }
 }

@@ -1,9 +1,9 @@
 package com.example.Library.service;
 
-import com.example.Library.Model.Book;
 import com.example.Library.Model.BookReservation;
 import com.example.Library.Model.Client;
 import com.example.Library.converter.ClientConverter;
+import com.example.Library.dto.BookDto;
 import com.example.Library.dto.ClientDto;
 import com.example.Library.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client addClient(ClientDto client) {
+    public Client addClient(Client client) {
         Client newClient = new Client(null,client.getName(),client.getSurname(),client.getEmail(),new HashSet<>());
         return clientRepository.save(newClient);
     }
@@ -59,5 +59,19 @@ public class ClientServiceImpl implements ClientService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<BookDto> getAllReservedBooksByUserId(Long userId) {
+        Optional<Client> client = clientRepository.findById(userId);
+        if(client.isPresent()){
+           List<BookDto> reservedBooks = new ArrayList<BookDto>();
+           for(BookReservation reservation : client.get().getReservations()){
+               BookDto book = modelMapper.map(reservation.getBook(), BookDto.class);
+               reservedBooks.add(book);
+           }
+           return reservedBooks;
+        }
+        return null;
     }
 }

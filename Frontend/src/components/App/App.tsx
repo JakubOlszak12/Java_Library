@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { randomDefaults } from "~/config/constants";
 import reactLogo from "./react.svg";
-import BasicDemo from "../Main";
+import Main from "../Main";
 import { createBrowserRouter } from "react-router-dom";
 
 
@@ -27,8 +27,8 @@ export function App(): ReactElement {
     }
 
     return (
-        <><button type="button" className="btn btn-primary">Primary</button>
-            <BasicDemo/>
+        <>
+          <Main/>
         </>
     );
 }

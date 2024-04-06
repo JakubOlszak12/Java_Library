@@ -20,7 +20,6 @@ public class ClientControllerAdvice {
         return ex.getMessage();
     }
 
-
     @ExceptionHandler(MethodArgumentNotValidException.class) //dla @Valid
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public List<String> argumentNotValidException(MethodArgumentNotValidException ex) {
