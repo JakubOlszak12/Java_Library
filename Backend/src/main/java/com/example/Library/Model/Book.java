@@ -1,6 +1,7 @@
 package com.example.Library.Model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.antlr.v4.runtime.misc.NotNull;
 
@@ -15,8 +16,10 @@ import java.util.Set;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
+    @NotNull
+    @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Only letters and numbers are allowed")
     private String title;
 
     private String author;
@@ -27,7 +30,11 @@ public class Book {
 
     private String description;
 
-    @OneToMany(mappedBy = "book",cascade = CascadeType.ALL)
-    private Set<OrderDetail> orderDetails;
+    private int quantity;
+
+    private int currentQuantity;
+
+    @OneToMany(mappedBy = "book")
+    Set<BookReservation> reservations;
 
 }

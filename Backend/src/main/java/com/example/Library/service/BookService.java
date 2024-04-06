@@ -10,9 +10,15 @@ import java.util.List;
 
 public interface BookService {
 
-    public List<BookDto> getAllBooks();
+    List<BookDto> getAllBooks();
 
     Page<Book> getBookPage(Pageable pageable);
 
     Page<BookDto> getBookDtoPage(Pageable pageable);
+
+    Book addBook(Book book);
+
+    Book getBookById(Long id);
+
+    boolean deleteBookById(Long id);
 }

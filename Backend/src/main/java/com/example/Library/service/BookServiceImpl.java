@@ -6,12 +6,12 @@ import com.example.Library.dto.BookDto;
 import com.example.Library.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,5 +38,25 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findAll(pageable).map((element) -> modelMapper.map(element, BookDto.class));
     }
 
+    @Override
+    public Book addBook(Book book) {
+        return bookRepository.save(book);
+    }
+
+    @Override
+    public Book getBookById(Long id) {
+        Optional<Book> book = bookRepository.findById(id);
+        return book.orElse(null);
+    }
+
+    @Override
+    public boolean deleteBookById(Long id) {
+        Optional<Book> book = bookRepository.findById(id);
+        if(book.isPresent()) {
+            bookRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 
 }

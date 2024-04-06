@@ -2,24 +2,21 @@ package com.example.Library.controller;
 
 import com.example.Library.Model.Book;
 import com.example.Library.dto.BookDto;
+import com.example.Library.exception.BookNotFoundException;
 import com.example.Library.service.BookService;
-import lombok.Getter;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/books")
 @CrossOrigin
 public class BookController {
 
@@ -27,7 +24,7 @@ public class BookController {
     BookService bookService;
     @Autowired
     ModelMapper modelMapper;
-    @GetMapping("/books")
+    @GetMapping("/booksList")
     public ResponseEntity<List<BookDto>> getBooks() {
         List<BookDto> books = bookService.getAllBooks();
         if (books.isEmpty()) {
@@ -45,5 +42,30 @@ public class BookController {
         } else {
             return ResponseEntity.ok(productsPage);
         }
+    }
+
+
+    @PostMapping("/save")
+    public ResponseEntity<Book> savePost(@Valid @RequestBody Book book){
+        return ResponseEntity.ok().body(bookService.addBook(book));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Book> getBook(@PathVariable Long id){
+            Book book = bookService.getBookById(id);
+            if(book == null){
+                throw new BookNotFoundException(id);
+            }
+            return ResponseEntity.ok().body(book);
+
+    }
+
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<Book> deleteBook(@PathVariable Long id){
+        boolean isPresent = bookService.deleteBookById(id);
+        if(!isPresent){
+            throw new BookNotFoundException(id);
+        }
+        return ResponseEntity.ok().build();
     }
 }

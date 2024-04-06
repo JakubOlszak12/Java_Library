@@ -20,4 +20,9 @@ public class BookDto {
     private String isbn;
 
     private String description;
+
+    private int quantity;
+
+    private int currentQuantity;
+
 }
