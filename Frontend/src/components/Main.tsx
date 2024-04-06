@@ -84,8 +84,10 @@ export default function Main() {
                         <th>Publisher</th>
                         <th>ISBN</th>
                         <th>Description</th>
+                        {isAuthenticated &&(
+                            <th>Actions</th>
+                        )}
                         
-                        <th>Actions</th>
                     </tr>
                 </thead>
                 {/* Table body */}
