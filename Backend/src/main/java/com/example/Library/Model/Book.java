@@ -39,13 +39,6 @@ public class Book {
     @Size(min= 10, max=300, message = "The description must be between 10 and 300 characters")
     private String description;
 
-    @NotNull
-    @Min(value = 1, message = "The quantity must be at least 1")
-    private int quantity;
-
-    @NotNull
-    @Min(value = 1, message = "The maximum quantity must be at least 1")
-    private int currentQuantity;
 
     @OneToMany(mappedBy = "book")
     Set<BookReservation> reservations;

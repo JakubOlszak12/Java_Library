@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useNavigation } from 'react-router-dom';
 
-interface Client {
+interface ReservationDto {
     id: number;
     name: string;
     surname: string;
     email: string;
+    clientId: number;
+    bookTitle: string;
+    bookId: number;
 }
 
-export default function ClientManagement() {
-    const [clients, setClients] = useState<Client[]>([]);
+export default function AssignedBooks() {
+    const [reservations, setReservations] = useState<ReservationDto[]>([]);
     const [errorMessage, setErrorMessage] = useState<string>('');
-    const navigation = useNavigate();
     let token = document.cookie.split('; ').find(row => row.startsWith('token='));
     token = token.substring(6)
-    console.log(token);
     useEffect(() => {
-        fetch('http://localhost:8080/api/clients/clientsList',{
-            method: 'GET',
+        fetch('http://localhost:8080/api/reservation/reservationList',{
+            method:'GET',
             headers:{
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token ? token : ''}`
@@ -30,7 +30,7 @@ export default function ClientManagement() {
                 return response.json();
             })
             .then(data => {
-                setClients(data);
+                setReservations(data);
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
@@ -39,30 +39,28 @@ export default function ClientManagement() {
     }, []);
 
     const handleDelete = (id: number) => {
-        const confirmed = window.confirm('Are you sure you want to delete this client?');
+        const confirmed = window.confirm('Are you sure you want to delete this reservation?');
         
         if (confirmed) {
-            fetch(`http://localhost:8080/api/clients/delete/${id}`, {
-                method: 'POST',
-                headers: {
+            fetch(`http://localhost:8080/api/reservation/delete/${id}`, {
+                method: 'DELETE',
+                headers:{
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token ? token : ''}`
                 }
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Failed to delete client because they have assigned book');
+                    throw new Error('Failed to delete reservation');
                 }
-                setClients(prevClients => prevClients.filter(client => client.id !== id));
+                setReservations(prevReservations => prevReservations.filter(reservation => reservation.id !== id));
             })
             .catch(error => {
                 setErrorMessage(error.message);
-                console.error('Failed to delete client:', error);
+                console.error('Failed to delete reservation:', error);
             });
         }
     };
-
-    
 
     return (
         <div className="card">
@@ -74,19 +72,24 @@ export default function ClientManagement() {
                         <th>Name</th>
                         <th>Surname</th>
                         <th>Email</th>
+                        <th>Client Id</th>
+                        <th>Book Title</th>
+                        <th>Book Id</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {clients.map(client => (
-                        <tr key={client.id}>
-                            <td>{client.id}</td>
-                            <td>{client.name}</td>
-                            <td>{client.surname}</td>
-                            <td>{client.email}</td>
+                    {reservations.map(reservation => (
+                        <tr key={reservation.id}>
+                            <td>{reservation.id}</td>
+                            <td>{reservation.name}</td>
+                            <td>{reservation.surname}</td>
+                            <td>{reservation.email}</td>
+                            <td>{reservation.clientId}</td>
+                            <td>{reservation.bookTitle}</td>
+                            <td>{reservation.bookId}</td>
                             <td>
-                                <button className='btn btn-primary' onClick={() => navigation(`edit/${client.id}`)}>Edit</button>
-                                <button className="btn btn-danger" onClick={() => handleDelete(client.id)}>Delete</button>
+                                <button className="btn btn-danger" onClick={() => handleDelete(reservation.id)}>Delete</button>
                             </td>
                         </tr>
                     ))}

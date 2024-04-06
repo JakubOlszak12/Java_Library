@@ -5,29 +5,31 @@ import { useNavigate } from 'react-router-dom';
 export function CreateBook() {
   const [errorMessage, setErrorMessage] = useState([]);
   const navigation = useNavigate();
-
+  let token = document.cookie.split('; ').find(row => row.startsWith('token='));
+  token = token.substring(6);
   function handleSubmit(event) {
     event.preventDefault();
+
     const formData = new FormData(event.currentTarget);
     const title = formData.get('title') as string;
     const author = formData.get('author') as string;
     const publisher = formData.get('publisher') as string;
     const isbn = formData.get('isbn') as string;
     const description = formData.get('description') as string;
-    const quantity = formData.get('quantity') as unknown;
-    const currentQuantity = formData.get('quantity') as unknown;
     // Simple data validation
     if (!title.trim() || !author.trim() || !publisher.trim() || !isbn.trim() || !description.trim()) {
       setErrorMessage(['Please fill in all fields']);
       return;
     }
 
+   
     fetch('http://localhost:8080/api/books/save', {
       method: 'POST',
-      headers: {
+      headers:{
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token ? token : ''}`
       },
-      body: JSON.stringify({ title, author, publisher, isbn, description, quantity, currentQuantity }),
+      body: JSON.stringify({ id:0,title, author, publisher, isbn, description }),
     })
       .then(async (response) => {
         if (response.status === 400) {
@@ -56,7 +58,7 @@ export function CreateBook() {
             ))}
           </div>
         )}
-        <Form onSubmit={handleSubmit} className="w-50 mx-auto">
+        <Form onSubmit={handleSubmit} className="w-50 mx-auto" method='POST'>
           <Form.Group controlId="formTitle">
             <Form.Label>Title</Form.Label>
             <Form.Control type="text" name="title" placeholder="Enter book title" />
@@ -81,13 +83,6 @@ export function CreateBook() {
             <Form.Label>Description</Form.Label>
             <Form.Control as="textarea" rows={3} name="description" placeholder="Enter description" />
           </Form.Group>
-
-          <Form.Group controlId="formQuantity">
-            <Form.Label>Quantity</Form.Label>
-            <Form.Control type="number" name="quantity" placeholder="Enter quantity" value={1} min={1} />
-          </Form.Group>
-
-
 
           <br />
           <div className="text-center">

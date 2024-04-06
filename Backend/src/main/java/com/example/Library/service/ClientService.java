@@ -23,4 +23,6 @@ public interface ClientService {
     boolean deleteClientById(Long id);
 
     List<BookDto> getAllReservedBooksByUserId(Long userId);
+
+    Client editClient(Client client);
 }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface Book {
     id: number;
@@ -15,7 +16,12 @@ export default function Main() {
     const [books, setBooks] = useState<Book[]>([]);
     const [errorMessage, setErrorMessage] = useState<string>('');
     const isAuthenticated = !!document.cookie.split('; ').find(row => row.startsWith('token='));
-        
+    let token = document.cookie.split('; ').find(row => row.startsWith('token='));
+    const navigation = useNavigate();
+    if(token){
+        token = token.substring(6)
+    }
+    
     useEffect(() => {
         fetch('http://localhost:8080/api/books/booksList')
             .then(response => {
@@ -39,7 +45,11 @@ export default function Main() {
         // Proceed with deletion if confirmed
         if (confirmed) {
             fetch(`http://localhost:8080/api/books/delete/${id}`, {
-                method: 'POST'
+                method: 'POST',
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token ? token : ''}`
+                }
             })
             .then(response => {
                 if (response.status === 500) {
@@ -55,10 +65,6 @@ export default function Main() {
             });
         }
     };
-
-    const handleEdit = (id: number) =>{
-
-    }
     
 
     return (
@@ -78,8 +84,7 @@ export default function Main() {
                         <th>Publisher</th>
                         <th>ISBN</th>
                         <th>Description</th>
-                        <th>Quantity</th>
-                        <th>Current Quantity</th>
+                        
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -97,14 +102,14 @@ export default function Main() {
                             <td>{book.publisher}</td>
                             <td>{book.isbn}</td>
                             <td>{book.description}</td>
-                            <td>{book.quantity}</td>
-                            <td>{book.currentQuantity}</td>
+                            
                             <td>
                                 {/* Conditionally render delete and edit buttons */}
                                 {isAuthenticated && (
                                     <>
+                                         <button className='btn btn-primary' onClick={() => navigation(`/books/edit/${book.id}`)}>Edit</button>
                                         <button className="btn btn-danger mr-2" onClick={() => handleDelete(book.id)}>Delete</button>
-                                        <button className="btn btn-primary" onClick={() => handleEdit(book.id)}>Edit</button>
+                                        
                                     </>
                                 )}
                             </td>

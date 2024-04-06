@@ -74,4 +74,16 @@ public class ClientServiceImpl implements ClientService {
         }
         return null;
     }
+
+    @Override
+    public Client editClient(Client client) {
+        Optional<Client> exists = clientRepository.findById(client.getId());
+        if(exists.isPresent()){
+            exists.get().setName(client.getName());
+            exists.get().setEmail(client.getEmail());
+            exists.get().setSurname(client.getSurname());
+            return clientRepository.save(exists.get());
+        }
+        return null;
+    }
 }

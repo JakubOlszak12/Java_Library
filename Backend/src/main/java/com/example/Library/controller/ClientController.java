@@ -75,4 +75,21 @@ public class ClientController {
         }
         return ResponseEntity.ok().body(clientService.getAllReservedBooksByUserId(id));
     }
+
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<?> editClient(@PathVariable Long id,@Valid @RequestBody Client client, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            List<String> errors = new ArrayList<String>();
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errors.add(error.getField() + ": " + error.getDefaultMessage()); }
+            // Return the map of errors in the response
+            return ResponseEntity.badRequest().body(errors);
+        }
+        Client updatedClient = clientService.editClient(client);
+        if (updatedClient == null) {
+            throw new ClientNotFoundException(id);
+        }
+
+        return ResponseEntity.ok(updatedClient);
+    }
 }

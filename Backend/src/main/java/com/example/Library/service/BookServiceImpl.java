@@ -43,7 +43,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book addBook(Book book) {
-        Book newBook = new Book(null,book.getTitle(),book.getAuthor(),book.getPublisher(),book.getIsbn(),book.getDescription(),book.getQuantity(),book.getCurrentQuantity(),new HashSet<BookReservation>());
+        Book newBook = new Book(null,book.getTitle(),book.getAuthor(),book.getPublisher(),book.getIsbn(),book.getDescription(),new HashSet<BookReservation>());
         return bookRepository.save(book);
     }
 
@@ -61,6 +61,20 @@ public class BookServiceImpl implements BookService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Book editBook(Book book) {
+        Optional<Book> exists = bookRepository.findById(book.getId());
+        if(exists.isPresent()) {
+            exists.get().setAuthor(book.getAuthor());
+            exists.get().setDescription(book.getDescription());
+            exists.get().setIsbn(book.getIsbn());
+            exists.get().setPublisher(book.getPublisher());
+            exists.get().setTitle(book.getTitle());
+            return bookRepository.save(exists.get());
+        }
+        return null;
     }
 
 }

@@ -21,8 +21,5 @@ public class BookDto {
 
     private String description;
 
-    private int quantity;
-
-    private int currentQuantity;
 
 }

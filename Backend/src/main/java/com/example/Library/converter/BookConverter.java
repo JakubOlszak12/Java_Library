@@ -16,8 +16,6 @@ public class BookConverter implements Converter<Book, BookDto> {
                 .publisher(source.getPublisher())
                 .isbn(source.getIsbn())
                 .description(source.getDescription())
-                .quantity(source.getQuantity())
-                .currentQuantity(source.getCurrentQuantity())
                 .build();
     }
 }

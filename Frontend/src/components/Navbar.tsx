@@ -34,6 +34,11 @@ export function NavBar({ isAuthenticated }: NavBarProps): ReactElement {
         navigation("/assign-book");
     };
 
+    const handleAssignments = () => {
+        // Redirect to /assign-book
+        navigation("/assignments");
+    };
+
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <a className="navbar-brand" href="/">Library</a>
@@ -63,6 +68,14 @@ export function NavBar({ isAuthenticated }: NavBarProps): ReactElement {
                             </li>
                             <li className="nav-item">
                                 <NavLink
+                                    to="/assignments"
+                                    className="nav-item"
+                                >
+                                    <a className="nav-link" href="#3">Assignments</a>
+                                </NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink
                                     to="/add-client"
                                     className="nav-item"
                                     onClick={handleAddClient}
@@ -70,6 +83,7 @@ export function NavBar({ isAuthenticated }: NavBarProps): ReactElement {
                                     <a className="nav-link" href="#3">Add Client</a>
                                 </NavLink>
                             </li>
+                            
                             <li className="nav-item">
                                 <NavLink
                                     to="/add-book"

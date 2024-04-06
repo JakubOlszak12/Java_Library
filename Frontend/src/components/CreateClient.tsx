@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 export function CreateClient() {
   const [errorMessage, setErrorMessage] = useState([]);
   const navigation = useNavigate();
-
+  let token = document.cookie.split('; ').find(row => row.startsWith('token='));
+  token = token.substring(6);
  function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -22,8 +23,9 @@ export function CreateClient() {
    
     fetch('http://localhost:8080/api/clients/save', {
       method: 'POST',
-      headers: {
+      headers:{
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token ? token : ''}`
       },
       body: JSON.stringify({ name, surname, email }),
     })

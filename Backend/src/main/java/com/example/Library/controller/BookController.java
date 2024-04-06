@@ -74,7 +74,7 @@ public class BookController {
 
     }
 
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Book> deleteBook(@PathVariable Long id){
         boolean isPresent = bookService.deleteBookById(id);
         if(!isPresent){
@@ -86,5 +86,21 @@ public class BookController {
                 return ResponseEntity.badRequest().build();
             }
         }
+    }
+
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<?> editBook(@PathVariable Long id,@Valid @RequestBody Book book, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            List<String> errors = new ArrayList<String>();
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errors.add(error.getField() + ": " + error.getDefaultMessage()); }
+            // Return the map of errors in the response
+            return ResponseEntity.badRequest().body(errors);
+        }
+        Book updateBook =bookService.editBook(book);
+        if(updateBook == null){
+            throw new BookNotFoundException(id);
+        }
+        return ResponseEntity.ok().body(updateBook);
     }
 }

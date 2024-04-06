@@ -12,6 +12,9 @@ import Client from "./components/Client";
 import {CreateClient} from "./components/CreateClient";
 import { CreateBook } from "./components/CreateBook";
 import { AssignBook } from "./components/AssignBook";
+import AssignedBooks from "./components/AssignedBooks";
+import { EditClient } from "./components/EditClient";
+import { EditBook } from "./components/EditBook";
 
 
 const rootContainer = document.createElement("div");
@@ -60,6 +63,23 @@ const AppContainer = () => {
                         <AssignBook />
                     </ProtectedRoute>
                     } />
+                    <Route path="/assignments" element={
+                    <ProtectedRoute>
+                        <AssignedBooks />
+                    </ProtectedRoute>
+                    } />
+                    <Route path="/clients/edit/:client_id" element={
+                        <ProtectedRoute>
+                            <EditClient/>
+                        </ProtectedRoute>
+                    }
+                    />
+                    <Route path="/books/edit/:book_id" element={
+                        <ProtectedRoute>
+                            <EditBook/>
+                        </ProtectedRoute>
+                    }
+                    />
                 </Routes>
             </BrowserRouter>
         </React.StrictMode>
